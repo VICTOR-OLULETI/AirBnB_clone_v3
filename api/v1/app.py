@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ This script checks the status of the API """
-from flask import Flask
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 import os
@@ -11,6 +11,12 @@ app.register_blueprint(app_views)
 host = os.getenv('HBNB_API_HOST', '0.0.0.0')
 # get the value of HBNB_API_PORT' environment variable or use default 5000
 port = os.getenv('HBNB_API_PORT', 5000)
+
+
+@app.errorhandler(404)
+def error_not_found(err):
+    """ Handles 404 errors """
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 @app.teardown_appcontext
