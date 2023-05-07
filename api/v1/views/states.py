@@ -47,7 +47,9 @@ def state_2(state_id=None):
             abort(404, 'Not found')
         else:
             # resp.delete()
+            # storage.all('State').pop(resp)
             storage.delete(resp)
+            storage.save()
             del resp
         return make_response(jsonify({}), 200)
 
