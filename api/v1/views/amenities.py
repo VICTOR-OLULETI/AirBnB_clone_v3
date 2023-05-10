@@ -6,7 +6,9 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.route('/amenities', methods=['GET', 'POST'])
+@app_views.route(
+        '/amenities', methods=['GET', 'POST'],
+        strict_slashes=False)
 # @app_views.route('/states/', methods=['GET', 'POST'])
 def amenity_1():
     """This function retrieves all the list of state objects """
@@ -28,30 +30,23 @@ def amenity_1():
         return make_response(jsonify(new_amenity.to_dict()), 201)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route(
+        '/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'],
+        strict_slashes=False)
 def amenity_2(amenity_id=None):
     """ This function returns the status of the api """
     resp = storage.get('Amenity', amenity_id)
+    if resp is None:
+        abort(404, 'Not found')
     if request.method == 'GET':
-        if resp is None:
-            abort(404, 'Not found')
-
         return jsonify(resp.to_dict())
 
     if request.method == 'DELETE':
-        if resp is None:
-            abort(404, 'Not found')
-        else:
-            # resp.delete()
-            # storage.all('State').pop(resp)
-            storage.delete(resp)
-            storage.save()
-            del resp
+        resp.delete()
+        storage.save()
         return make_response(jsonify({}), 200)
 
     if request.method == 'PUT':
-        if resp is None:
-            abort(404, 'Not found')
         data = request.get_json()
         if data is None:
             abort(400, 'Not a JSON')
@@ -59,6 +54,5 @@ def amenity_2(amenity_id=None):
         for key, value in data.items():
             if key not in ['id', 'created_at', 'updated_at']:
                 setattr(resp, key, value)
-        # obj = resp(**data)
         resp.save()
         return make_response(jsonify(resp.to_dict()), 200)
