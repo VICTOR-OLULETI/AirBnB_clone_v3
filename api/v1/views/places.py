@@ -3,15 +3,15 @@
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
-from models.places import Place
-from models.cities import City
+from models.place import Place
+from models.city import City
 
 
 @app_views.route(
         '/cities/<city_id>/places', methods=['GET', 'POST'],
         strict_slashes=False)
 def place_1(city_id=None):
-    """This function retrieves all the list of city objects """
+    """ This function retrieves all the list of city objects """
     resp = storage.all("Place")
     resp2 = storage.get('City', city_id)
     if resp2 is None:
