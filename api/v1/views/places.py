@@ -3,15 +3,16 @@
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
-from models.city import City
+from models.places import Place
+from models.cities import City
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'])
-def city_1(state_id=None):
-    """This function retrieves all the list of state objects """
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
+def city_1(city_id=None):
+    """This function retrieves all the list of city objects """
     resp = storage.all("City")
-    resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id]
-    resp2 = storage.get("State", state_id)
+    resp1 = [i.to_dict() for i in resp.values() if i.city_id == city_id]
+    resp2 = storage.get("City", city_id)
     if request.method == 'GET':
         if resp1 is None:
             abort(404, {'error': 'Not found'})
@@ -30,16 +31,22 @@ def city_1(state_id=None):
 
         if resp.get('name') is None:
             abort(400, {'error': 'Missing name'})
+        if resp.get('user_id') is None:
+            abort(400, {'error': 'Missing user_id'})
         # State = classes.get('State')
-        new_state = City(**resp)
-        new_state.save()
-        return make_response(jsonify(new_state.to_dict()), 201)
+        user_id = resp.get('user_id')
+        resp3 = storage.get("User", user_id)
+        if not resp3:
+            abort(404, {'error': 'Not found'})
+        new_city = City(**resp)
+        new_city.save()
+        return make_response(jsonify(new_city.to_dict()), 201)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'])
-def city_2(city_id=None):
+@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
+def city_2(place_id=None):
     """ This function returns the status of the api """
-    resp = storage.get('City', city_id)
+    resp = storage.get('Place', place_id)
     if request.method == 'GET':
         # resp = storage.get(State, state_id)
         if resp is None:

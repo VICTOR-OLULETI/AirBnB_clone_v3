@@ -3,45 +3,36 @@
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
-from models.city import City
+from models.amenity import Amenity
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'])
-def city_1(state_id=None):
+@app_views.route('/amenities', methods=['GET', 'POST'])
+# @app_views.route('/states/', methods=['GET', 'POST'])
+def amenity_1():
     """This function retrieves all the list of state objects """
-    resp = storage.all("City")
-    resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id]
-    resp2 = storage.get("State", state_id)
     if request.method == 'GET':
-        if resp1 is None:
-            abort(404, {'error': 'Not found'})
+        resp = storage.all("Amenity")
+        resp1 = [i.to_dict() for i in resp.values()]
         return jsonify(resp1)
 
     if request.method == 'POST':
         resp = request.get_json()
-        if not resp2:
-            abort(404, {'error': 'Not found'})
         if not resp:
             """ if response is none """
             abort(400, {'error': 'Not a JSON'})
 
-        # if resp1 is None:
-        #    abort(404, {'error': 'Not found'})
-
         if resp.get('name') is None:
             abort(400, {'error': 'Missing name'})
-        # State = classes.get('State')
-        new_state = City(**resp)
-        new_state.save()
-        return make_response(jsonify(new_state.to_dict()), 201)
+        new_amenity = Amenity(**resp)
+        new_amenity.save()
+        return make_response(jsonify(new_amenity.to_dict()), 201)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'])
-def city_2(city_id=None):
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
+def amenity_2(amenity_id=None):
     """ This function returns the status of the api """
-    resp = storage.get('City', city_id)
+    resp = storage.get('Amenity', amenity_id)
     if request.method == 'GET':
-        # resp = storage.get(State, state_id)
         if resp is None:
             abort(404, 'Not found')
 
@@ -51,6 +42,8 @@ def city_2(city_id=None):
         if resp is None:
             abort(404, 'Not found')
         else:
+            # resp.delete()
+            # storage.all('State').pop(resp)
             storage.delete(resp)
             storage.save()
             del resp
