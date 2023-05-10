@@ -7,7 +7,7 @@ from models.city import City
 
 
 @app_views.route(
-        '/states/<state_id>/cities', methods=['GET', 'POST'],
+        '/states/<string:state_id>/cities', methods=['GET', 'POST'],
         strict_slashes=False)
 def city_1(state_id=None):
     """This function retrieves all the list of state objects """
@@ -36,7 +36,7 @@ def city_1(state_id=None):
 
 
 @app_views.route(
-        '/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'],
+        '/cities/<string:city_id>', methods=['GET', 'DELETE', 'PUT'],
         strict_slashes=False)
 def city_2(city_id=None):
     """ This function returns the status of the api """
