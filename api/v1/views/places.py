@@ -25,30 +25,26 @@ def place_1(city_id=None):
 
     if request.method == 'POST':
         resp = request.get_json()
-        if not resp2:
-            abort(404, {'error': 'Not found'})
         if not resp:
             """ if response is none """
             abort(400, {'error': 'Not a JSON'})
-
-        # if resp1 is None:
-        #    abort(404, {'error': 'Not found'})
 
         if resp.get('name') is None:
             abort(400, {'error': 'Missing name'})
         if resp.get('user_id') is None:
             abort(400, {'error': 'Missing user_id'})
-        # State = classes.get('State')
         user_id = resp.get('user_id')
         resp3 = storage.get("User", user_id)
         if not resp3:
             abort(404, {'error': 'Not found'})
-        new_city = City(**resp)
-        new_city.save()
-        return make_response(jsonify(new_city.to_dict()), 201)
+        new_place = Place(**resp)
+        new_place.save()
+        return make_response(jsonify(new_place.to_dict()), 201)
 
 
-@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route(
+        '/places/<place_id>', methods=['GET', 'DELETE', 'PUT'],
+        strict_slashes=False)
 def place_2(place_id=None):
     """ This function returns the status of the api """
     resp = storage.get('Place', place_id)
