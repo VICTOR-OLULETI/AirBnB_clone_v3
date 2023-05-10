@@ -16,9 +16,9 @@ def city_1(state_id=None):
     resp1 = [i.to_dict() for i in resp2.cities]
     # resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id]
     if request.method == 'GET':
-        if resp1 is None:
-            abort(404, {'error': 'Not found'})
         if resp2 is None:
+            abort(404, {'error': 'Not found'})
+        if resp1 is None:
             abort(404, {'error': 'Not found'})
         return jsonify(resp1)
 
