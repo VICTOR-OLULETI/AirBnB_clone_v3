@@ -7,7 +7,7 @@ from models.state import State
 
 
 @app_views.route('/states', methods=['GET', 'POST'], strict_slashes=False)
-#@app_views.route('/states/', methods=['GET', 'POST'])
+# @app_views.route('/states/', methods=['GET', 'POST'])
 def state_1():
     """This function retrieves all the list of state objects """
     if request.method == 'GET':
@@ -29,7 +29,9 @@ def state_1():
         return make_response(jsonify(new_state.to_dict()), 201)
 
 
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
+@app_views.route(
+        '/states/<state_id>', methods=['GET', 'DELETE', 'PUT'],
+        strict_slashes=False)
 def state_2(state_id=None):
     """ This function returns the status of the api """
     resp = storage.get('State', state_id)
@@ -49,7 +51,7 @@ def state_2(state_id=None):
             # resp.delete()
             # storage.all('State').pop(resp)
             # storage.delete(resp)
-            state.delete()
+            resp.delete()
             storage.save()
             # del resp
         return make_response(jsonify({}), 200)
