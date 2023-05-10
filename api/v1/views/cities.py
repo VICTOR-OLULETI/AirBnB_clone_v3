@@ -32,6 +32,7 @@ def city_1(state_id=None):
         if resp.get('name') is None:
             abort(400, {'error': 'Missing name'})
         # State = classes.get('State')
+        resp['state_id'] = state_id
         new_state = City(**resp)
         new_state.save()
         return make_response(jsonify(new_state.to_dict()), 201)
