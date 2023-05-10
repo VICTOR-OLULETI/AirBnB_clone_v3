@@ -10,7 +10,7 @@ from models.cities import City
 @app_views.route(
         '/cities/<city_id>/places', methods=['GET', 'POST'],
         strict_slashes=False)
-def city_1(city_id=None):
+def place_1(city_id=None):
     """This function retrieves all the list of city objects """
     resp = storage.all("Place")
     resp2 = storage.get('City', city_id)
@@ -49,7 +49,7 @@ def city_1(city_id=None):
 
 
 @app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
-def city_2(place_id=None):
+def place_2(place_id=None):
     """ This function returns the status of the api """
     resp = storage.get('Place', place_id)
     if resp is None:
@@ -65,6 +65,7 @@ def city_2(place_id=None):
     if request.method == 'PUT':
         data = request.get_json()
         if data is None:
+            """ if data is none """
             abort(400, {'error': 'Not a JSON'})
 
         for key, value in data.items():
