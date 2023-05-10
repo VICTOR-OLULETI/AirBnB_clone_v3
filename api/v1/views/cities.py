@@ -13,10 +13,10 @@ def city_1(state_id=None):
     """This function retrieves all the list of state objects """
     # resp = storage.all("City")
     resp2 = storage.get("State", state_id)
-    resp1 = [i.to_dict() for i in resp2.cities]
-    # resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id]
     if resp2 is None:
         abort(404, {'error': 'Not found'})
+    resp1 = [i.to_dict() for i in resp2.cities]
+    # or resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id
     if request.method == 'GET':
         if resp1 is None:
             abort(404, {'error': 'Not found'})
