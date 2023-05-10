@@ -37,13 +37,14 @@ def place_1(city_id=None):
         resp3 = storage.get("User", user_id)
         if not resp3:
             abort(404, {'error': 'Not found'})
+        resp['city_id'] = city_id
         new_place = Place(**resp)
         new_place.save()
         return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route(
-        '/places/<place_id>', methods=['GET', 'DELETE', 'PUT'],
+        '/places/<string:place_id>', methods=['GET', 'DELETE', 'PUT'],
         strict_slashes=False)
 def place_2(place_id=None):
     """ This function returns the status of the api """
