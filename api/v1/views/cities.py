@@ -11,21 +11,19 @@ from models.city import City
         strict_slashes=False)
 def city_1(state_id=None):
     """This function retrieves all the list of state objects """
-    resp = storage.all("City")
+    # resp = storage.all("City")
     resp2 = storage.get("State", state_id)
     resp1 = [i.to_dict() for i in resp2.cities]
     # resp1 = [i.to_dict() for i in resp.values() if i.state_id == state_id]
+    if resp2 is None:
+        abort(404, {'error': 'Not found'})
     if request.method == 'GET':
-        if resp2 is None:
-            abort(404, {'error': 'Not found'})
         if resp1 is None:
             abort(404, {'error': 'Not found'})
         return jsonify(resp1)
 
     if request.method == 'POST':
         resp = request.get_json()
-        if not resp2:
-            abort(404, {'error': 'Not found'})
         if not resp:
             """ if response is none """
             abort(400, {'error': 'Not a JSON'})
@@ -43,22 +41,17 @@ def city_1(state_id=None):
 def city_2(city_id=None):
     """ This function returns the status of the api """
     resp = storage.get('City', city_id)
+    if resp is None:
+        abort(404, 'Not found')
     if request.method == 'GET':
-        if resp is None:
-            abort(404, 'Not found')
         return jsonify(resp.to_dict())
 
     if request.method == 'DELETE':
-        if resp is None:
-            abort(404, 'Not found')
-        else:
-            resp.delete()
-            storage.save()
+        resp.delete()
+        storage.save()
         return make_response(jsonify({}), 200)
 
     if request.method == 'PUT':
-        if resp is None:
-            abort(404, 'Not found')
         data = request.get_json()
         if data is None:
             abort(400, 'Not a JSON')
