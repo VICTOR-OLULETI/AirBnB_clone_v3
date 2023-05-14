@@ -9,11 +9,11 @@ from models.reviews import Review
 
 
 @app_views.route(
-        '/places/<place_id>/reviews', methods=['GET', 'POST'],
+        '/places/<string:place_id>/reviews', methods=['GET', 'POST'],
         strict_slashes=False)
 def review_1(place_id=None):
     """ This function retrieves all the list of Review objects """
-    resp = storage.all("Review")
+    # resp = storage.all("Review")
     resp2 = storage.get('Place', place_id)
     if resp2 is None:
         abort(404, {'error': 'Not found'})
