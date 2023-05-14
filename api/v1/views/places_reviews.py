@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" This script defines methods for the REST api for Review object """
+"""
+    This script defines methods for the REST api for Review object.
+    It performs the following methods: get, post, delete, put.
+"""
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
-#from models.place import Place
-#from models.city import City
-from models.reviews import Review
+from models.review import Review
 
 
 @app_views.route(
