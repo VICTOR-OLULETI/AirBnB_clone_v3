@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This script defines methods for the REST api for Review object"""
+""" This script defines methods for the REST api for Review object """
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
