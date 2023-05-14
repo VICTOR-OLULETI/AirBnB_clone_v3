@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This script defines methods for the api """
+""" This script defines methods for the REST api for Review object"""
 from flask import jsonify, request, make_response, abort
 from api.v1.views import app_views
 from models import storage
@@ -21,6 +21,7 @@ def review_1(place_id=None):
     resp1 = [i.to_dict() for i in resp2.reviews]
     if request.method == 'GET':
         if resp1 is None:
+            """ if response is none """
             abort(404, {'error': 'Not found'})
         return jsonify(resp1)
 
@@ -37,6 +38,7 @@ def review_1(place_id=None):
         user_id = resp.get('user_id')
         resp3 = storage.get("User", user_id)
         if not resp3:
+            """ if response is none """
             abort(404, {'error': 'Not found'})
         resp['place_id'] = place_id
         new_review = Review(**resp)
