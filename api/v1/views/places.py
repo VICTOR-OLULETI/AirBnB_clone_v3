@@ -22,18 +22,18 @@ def place_search():
     if request.method == 'POST':
         data = request.get_json()
         place = []
-        if not data:
+        Place = storage.all('Place')
+        all_places = [i.to_dict() for i in Place.values()]
+        if data is None:
             """ if data is none """
             abort(400, {'error': 'Not a JSON'})
+        if not data and len(request.data) == 0:
+            return(jsonify(all_places))
         states = data.get('states')
         amenity_ids = data.get('amenities')
         cities = data.get('cities')
-        Place = storage.all('Place')
-        if states is None:
-            if amenity_ids is None:
-                if cities is None:
-                    all_places = [i.to_dict() for i in Place.values()]
-                    return (jsonify(all_places))
+        if states is None and amenity_ids is None and cities is None:
+            return (jsonify(all_places))
         if states:
             """ list of states """
             list_of_states = [
