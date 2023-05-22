@@ -60,10 +60,10 @@ def place_amenities_2(place_id=None, amenity_id=None):
         return make_response(jsonify({}), 200)
 
     if request.method == 'POST':
-        resp = request.get_json()
-        if not resp:
-            """ if response is none """
-            abort(400, {'error': 'Not a JSON'})
+        # resp = request.get_json()
+        # if not resp:
+        #    """ if response is none """
+        #    abort(400, {'error': 'Not a JSON'})
         if environ.get('HBNB_TYPE_STORAGE') == "db":
             if amenity in place.amenities:
                 """ if amenity is not in the place object """
