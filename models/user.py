@@ -8,6 +8,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from hashlib import md5
 
+
 class User(BaseModel, Base):
     """Representation of a user """
     if models.storage_t == 'db':
@@ -27,7 +28,7 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
-    
+
     def __setattr__(self, key, value):
         """using md5 encryption on passwords """
         if key == "password":
