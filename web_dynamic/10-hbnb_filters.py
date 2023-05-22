@@ -6,15 +6,16 @@ starts a Flask web application
 from flask import Flask, render_template
 from models import *
 from models import storage
-from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/cities_by_states', strict_slashes=False)
-def cities_by_states():
-    """display the states and cities listed in alphabetical order"""
-    states = storage.all(State).values()
-    return render_template('8-cities_by_states.html', states=states)
+@app.route('/hbnb_filters', strict_slashes=False)
+def filters():
+    """display a HTML page like 6-index.html from static"""
+    states = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
+    return render_template('10-hbnb_filters.html', states=states,
+                           amenities=amenities)
 
 
 @app.teardown_appcontext
