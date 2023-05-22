@@ -8,6 +8,73 @@ from models.city import City
 
 
 @app_views.route(
+                '/places_search',
+                methods=['POST'],
+                strict_slashes=False)
+def place_search():
+    """ This function retrieves all Place objects depending on the
+    JSON in the body of the request.
+    The JSON contains 3 optional keys:
+        states: list of state ids
+        cities: list of City ids
+        amenities: list of Amenity ids
+    """
+    if request.method == 'POST':
+        data = request.get_json()
+        place = []
+        if not data:
+            """ if data is none """
+            abort(400, {'error': 'Not a JSON'})
+        states = data.get('states')
+        amenity_ids = data.get('amenities')
+        cities = data.get('cities')
+        Place = storage.all('Place')
+        if states is None:
+            if amenity_ids is None:
+                if cities is None:
+                    all_places = [i.to_dict() for i in Place.values()]
+                    return (jsonify(all_places))
+        if states:
+            """ list of states """
+            list_of_states = [
+                    storage.get('State', state_id) for state_id in states]
+            """ list of cities in states """
+            list_of_cities = [
+                city for state in list_of_states for city in state.cities]
+            # print(list_of_cities)
+            """ list of places in cities """
+            list_of_places = [c.places for c in list_of_cities]
+            place.extend(list_of_places)
+        if cities:
+            list_of_cities = [
+                storage.get('City', city_id) for city_id in cities]
+            print(list_of_cities)
+            list_of_places = [
+                city.places for city in list_of_cities if city is not None]
+            place.extend(list_of_places)
+        if amenity_ids:
+            list_of_amenities = [
+                storage.get("Amenity", amenity_id)
+                for amenity_id in amenity_ids]
+            if place is not None:
+                list_of_places_1 = [
+                    p for p in place if all(
+                        item in p.amenities for item in list_of_amenities
+                        )]
+            else:
+                list_of_places_1 = [
+                    p for p in Place if all(
+                        item in p.amenities for item in list_of_amenities)]
+            place = list_of_places_1
+        resp1 = [i for j in place for i in j]
+        resp1 = list(set(resp1))
+        # resp = [i.to_dict() for p in place for i in p]
+        resp = [i.to_dict() for i in resp1]
+        # print(resp)
+        return (jsonify(resp))
+
+
+@app_views.route(
         '/cities/<city_id>/places', methods=['GET', 'POST'],
         strict_slashes=False)
 def place_1(city_id=None):
