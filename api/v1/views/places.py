@@ -27,7 +27,7 @@ def place_search():
         if data is None:
             """ if data is none """
             abort(400, {'error': 'Not a JSON'})
-        if not data or len(request.data) == 0:
+        if not data or len(data) == 0:
             return(jsonify(all_places))
         states = data.get('states')
         amenity_ids = data.get('amenities')
