@@ -89,3 +89,8 @@ section.filters > button:hover {
     margin-left: 50px;
     margin-bottom: 10px;
 }
+
+.amenities > .popover > li > input {
+    margin-left: -10px;
+
+}

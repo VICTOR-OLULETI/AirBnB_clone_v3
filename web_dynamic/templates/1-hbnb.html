@@ -10,12 +10,12 @@
     <link rel="icon" href="../static/images/icon.png" type="image/png">
     <title>AirBnb Clone</title>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="../static/scripts/100-hbnb.js?{{ cache_id }}"></script>
+	<script src="../static/scripts/1-hbnb.js?{{ cache_id }}"></script>
   </head>
   <body>
     <header>
-		<div id ="api_status"></div>
-      	<div class="logo"></div>
+      <div class="logo">
+      </div>
     </header>
     <div class="container">
       <section class="filters">
@@ -24,11 +24,11 @@
 	  <h4>&nbsp;</h4>
 	  <ul class="popover">
         {% for state in states %}
-	    <li><input type="checkbox" data-id="{{ state[0].id }}" data-name="{{ state[0].name }}">
+	    <li>
 	      <h2>{{ state[0].name }}</h2>
 	      <ul>
             {% for city in state[1] %}
-		<li><input type="checkbox" data-id="{{ city.id }}" data-name="{{ city.name }}">
+		<li>
             {{ city.name }}
         </li>
             {% endfor %}
@@ -54,6 +54,36 @@
       </section>
       <section class="places">
 	<h1>Places</h1>
+    {% for place in places %}
+	<article>
+     <div class="title">
+	  <h2>{{ place.name }}</h2>
+	  <div class="price_by_night">
+	    <p>${{ place.price_by_night }}</p>
+	  </div>
+      </div>
+	  <div class="information">
+	    <div class="max_guest">
+	      <div class="guest_image"></div>
+	      <p>{{ place.max_guest }} Guest{% if place.max_guest > 1 %}s{% endif %}</p>
+	    </div>
+	    <div class="number_rooms">
+	      <div class="bed_image"></div>
+	      <p>{{ place.number_rooms }} Bedroom{% if place.number_rooms > 1 %}s{% endif %}</p>
+	    </div>
+	    <div class="number_bathrooms">
+	      <div class="bath_image"></div>
+	      <p>{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms > 1 %}s{% endif %}</p>
+	    </div>
+	  </div>
+	  <div class="user">
+	    <p><b>Owner: </b>{{ place.user.first_name }} {{ place.user.last_name }}</p>
+	  </div>
+	  <div class="description">
+	    <p>{{ place.description | safe }}</p>
+	  </div>
+	</article>
+    {% endfor %}
       </section>
     </div>
     <footer>

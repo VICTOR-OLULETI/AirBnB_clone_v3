@@ -7,7 +7,7 @@ from api.v1.views import app_views
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
 # get the value of HBNB_API_HOST environment variable or use default 0.0.0.0
 host = os.getenv('HBNB_API_HOST', '0.0.0.0')
